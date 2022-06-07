@@ -32,10 +32,12 @@ public class StudentService {
         }
         throw new UserNotFound(regNo+" not found");
     }
-    public void deleteStudent(String regNo)   {
+    public void deleteStudent(String regNo) {
         Optional<Student> student1 = studentRepository.findByRegNumber(regNo);
-        student1.ifPresent(student -> studentRepository.delete(student));
-        throw new UserNotFound(regNo+" not found");
+        if (student1.isEmpty()){
+            throw new UserNotFound(regNo + " not found");
+        }
+        studentRepository.delete(student1.get());
     }
     public GetStudentDTO getStudentByRegNumber(String regNo){
         Optional<Student> student1 = studentRepository.findByRegNumber(regNo);
