@@ -30,7 +30,7 @@ public class StudentController {
         return ResponseEntity.ok(regNo +" was successfully deleted");
     }
     @GetMapping("/get/{regNo}")
-    public  Student getStudent(@PathVariable String regNo){
+    public  GetStudentDTO getStudent(@PathVariable String regNo){
            return studentService.getStudentByRegNumber(regNo);
     }
 

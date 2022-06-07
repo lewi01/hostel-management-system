@@ -20,14 +20,15 @@ public class StudentService {
         }
         studentRepository.save(student);
     }
-    public Student updateStudent(Student student, String regNo)   {
+    public void updateStudent(Student student, String regNo)   {
         Optional<Student> student1 = studentRepository.findByRegNumber(regNo);
         if (student1.isPresent()){
             student1.get().setFirstName(student.getFirstName());
             student1.get().setLastName(student.getLastName());
             student1.get().setPhoneNumber(student.getPhoneNumber());
             student1.get().setRegNumber(student.getRegNumber());
-            return studentRepository.save(student1.get());
+            studentRepository.save(student1.get());
+            return;
         }
         throw new UserNotFound(regNo+" not found");
     }
@@ -36,10 +37,15 @@ public class StudentService {
         student1.ifPresent(student -> studentRepository.delete(student));
         throw new UserNotFound(regNo+" not found");
     }
-    public Student getStudentByRegNumber(String regNo){
+    public GetStudentDTO getStudentByRegNumber(String regNo){
         Optional<Student> student1 = studentRepository.findByRegNumber(regNo);
+        GetStudentDTO student = new GetStudentDTO();
         if (student1.isPresent()){
-            return student1.get();
+            student.setFirstName(student1.get().getFirstName());
+            student.setLastName(student1.get().getLastName());
+            student.setRegNumber(student1.get().getRegNumber());
+            student.setPhoneNumber(student1.get().getPhoneNumber());
+            return student;
         }
         throw new UserNotFound(regNo+" not found");
     }
