@@ -1,6 +1,5 @@
-package com.lewisCode.hostelbookingsystem.hostel;
+package com.lewisCode.hostelbookingsystem.entity;
 
-import com.lewisCode.hostelbookingsystem.admin.Admin;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,9 +16,11 @@ public class Hostel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String HostelName;
-
-    @OneToMany()
-    @JoinColumn(name = "admin_id",nullable = false)
+    @Column
+    private String name;
+    @OneToMany(mappedBy = "hostel", cascade = CascadeType.ALL)
+    private List<Student> student;
+    @OneToMany(mappedBy = "hostel", cascade = CascadeType.ALL)
     private List<Admin> admin;
+
 }

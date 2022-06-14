@@ -1,4 +1,4 @@
-package com.lewisCode.hostelbookingsystem.student;
+package com.lewisCode.hostelbookingsystem.dto;
 
 
 import lombok.AllArgsConstructor;
@@ -8,10 +8,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetStudentDTO {
+public class StudentResponse {
 
     private String phoneNumber;
-    private String regNumber;
     private String firstName;
     private String lastName;
 }

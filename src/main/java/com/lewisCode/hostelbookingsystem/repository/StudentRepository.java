@@ -1,5 +1,6 @@
-package com.lewisCode.hostelbookingsystem.student;
+package com.lewisCode.hostelbookingsystem.repository;
 
+import com.lewisCode.hostelbookingsystem.entity.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -7,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface StudentRepository extends JpaRepository<Student,Long> {
-    Optional<Student> findByRegNumber(String regNo);
+    Optional<Student> findByPhoneNumber(String phoneNo);
 }
