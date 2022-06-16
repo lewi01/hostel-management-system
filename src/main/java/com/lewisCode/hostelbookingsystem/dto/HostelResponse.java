@@ -9,4 +9,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class HostelResponse {
     private String HostelName;
+    private String phoneNumber;
 }

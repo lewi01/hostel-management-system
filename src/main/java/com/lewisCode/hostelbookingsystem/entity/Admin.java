@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -14,10 +15,13 @@ public class Admin {
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long Id;
+   @Column
    private String firstName;
+   @Column
    private String lastName;
+   @Column
    private String phoneNumber;
-   @OneToOne
-   @JoinColumn(name = "admin_id")
-   private Hostel hostel;
+   @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL,
+           fetch = FetchType.LAZY)
+   private List<Hostel> hostel;
 }
