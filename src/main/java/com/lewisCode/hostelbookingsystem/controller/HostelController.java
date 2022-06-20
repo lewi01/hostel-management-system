@@ -38,7 +38,11 @@ public class HostelController {
     @GetMapping("/admin/{phoneNumber}/get")
     public List<Hostel> getAllHostelAsPerAdminPhoneNumber(
             @PathVariable String phoneNumber ){
-        return hostelService.findAllHostelByAdminPhoneNumber(phoneNumber);
+        return hostelService.findAllHostelByUserPhoneNumber(phoneNumber);
     }
-
+    @DeleteMapping("/delete/{name}")
+    public ResponseEntity<?> deleteHostel(@PathVariable String name){
+        hostelService.deleteHostel(name);
+        return ResponseEntity.ok(name +" was successfully deleted");
+    }
 }

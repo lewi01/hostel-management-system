@@ -1,13 +1,14 @@
 package com.lewisCode.hostelbookingsystem.repository;
 
-import com.lewisCode.hostelbookingsystem.entity.Admin;
+import com.lewisCode.hostelbookingsystem.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface AdminRepository extends JpaRepository<Admin,Long> {
-    Optional<Admin> findByPhoneNumber(String phoneNumber);
+public interface UserRepository extends JpaRepository<User,Long> {
+    Optional<User> findByPhoneNumber(String phoneNo);
+    User findByHostelName(String name);
     boolean existsByPhoneNumber(String phoneNumber);
 }

@@ -3,8 +3,8 @@ package com.lewisCode.hostelbookingsystem.service;
 import com.lewisCode.hostelbookingsystem.dto.HostelResponse;
 import com.lewisCode.hostelbookingsystem.entity.Hostel;
 import com.lewisCode.hostelbookingsystem.exeptions.UserNotFound;
-import com.lewisCode.hostelbookingsystem.repository.AdminRepository;
 import com.lewisCode.hostelbookingsystem.repository.HostelRepository;
+import com.lewisCode.hostelbookingsystem.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,12 +15,12 @@ import java.util.List;
 public class HostelService {
 
     private HostelRepository hostelRepository;
-    private AdminRepository adminRepository;
+    private UserRepository userRepository;
 
     public void createHostel(Long adminId, Hostel hostel){
-        adminRepository.findById(adminId)
-                .map(admin -> {
-                    hostel.setAdmin(admin);
+        userRepository.findById(adminId)
+                .map(user -> {
+                    hostel.setUser(user);
                     return hostelRepository.save(hostel);
                 })
                 .orElseThrow(() -> new UserNotFound("Not found admin with id " + adminId));
@@ -45,10 +45,17 @@ public class HostelService {
         hostelResponse.setPhoneNumber(hostel.getPhoneNumber());
         return hostelResponse;
     }
-    public List<Hostel> findAllHostelByAdminPhoneNumber( String phoneNumber){
-        if (!adminRepository.existsByPhoneNumber(phoneNumber)){
+    public List<Hostel> findAllHostelByUserPhoneNumber(String phoneNumber){
+        if (!userRepository.existsByPhoneNumber(phoneNumber)){
             throw  new UserNotFound("%s not found".formatted(phoneNumber));
         }
-        return hostelRepository.findByAdminPhoneNumber(phoneNumber);
+        return hostelRepository.findByUserPhoneNumber(phoneNumber);
+    }
+    public void deleteHostel(String name){
+        Hostel hostel = hostelRepository.findByName(name);
+        if (hostel == null){
+            throw new UserNotFound("%s not found" .formatted(name));
+        }
+        hostelRepository.delete(hostel);
     }
 }

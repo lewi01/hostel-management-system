@@ -16,7 +16,6 @@ public class Hostel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private Long id;
     @Column
     private String phoneNumber;
@@ -24,10 +23,10 @@ public class Hostel {
     private String name;
     @JsonIgnore
     @OneToMany(mappedBy = "hostel", cascade = CascadeType.ALL)
-    private List<Student> student;
+    private List<Room> rooms;
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "admin_id")
-    private Admin admin;
+    @JoinColumn(name = "user_id")
+    private User user;
 
 }
