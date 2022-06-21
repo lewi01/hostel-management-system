@@ -29,6 +29,7 @@ public class RoomService {
         }
         room1.setName(room.getName());
         room1.setMaxStudentOccupants(room.getMaxStudentOccupants());
+        room1.setCost(room.getCost());
         roomRepository.save(room1);
     }
     public  void deleteRoom(String name){

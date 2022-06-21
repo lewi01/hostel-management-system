@@ -1,16 +1,28 @@
-//package com.lewisCode.hostelbookingsystem.entity;
-//
-//import javax.persistence.JoinColumn;
-//import javax.persistence.OneToMany;
-//import javax.persistence.OneToOne;
-//
-//public class Booking {
-//    private boolean paid;
-//    private double amount;
-//    private double balance;
-////    @OneToMany(mappedBy = "booking")
-////    private Student student;
-//
-//    @OneToOne
-//    private Payment payment;
-//}
+package com.lewisCode.hostelbookingsystem.entity;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+
+@Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+public class Booking {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private boolean book;
+    @ManyToOne
+    @JoinColumn(name = "room_id")
+    private Room room;
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+
+}

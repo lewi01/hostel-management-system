@@ -30,14 +30,15 @@ public class UserService {
     }
     public void updateUser(User user, String mobileNo)   {
         Optional<User> user1 = userRepository.findByPhoneNumber(mobileNo);
-        if (user1.isPresent()){
-            user1.get().setFirstName(user.getFirstName());
-            user1.get().setLastName(user.getLastName());
-            user1.get().setPhoneNumber(user.getPhoneNumber());
-            user1.get().setEmail(user.getEmail());
-            userRepository.save(user1.get());
+        if (user1.isEmpty()){
+            throw new UserNotFound(mobileNo +" not found");
         }
-        throw new UserNotFound(mobileNo+" not found");
+        user1.get().setFirstName(user.getFirstName());
+        user1.get().setLastName(user.getLastName());
+        user1.get().setPhoneNumber(user.getPhoneNumber());
+        user1.get().setEmail(user.getEmail());
+        user1.get().setPassword(user.getPassword());
+        userRepository.save(user1.get());
     }
     public void deleteUser(String mobileNo) {
         Optional<User> user = userRepository.findByPhoneNumber(mobileNo);
