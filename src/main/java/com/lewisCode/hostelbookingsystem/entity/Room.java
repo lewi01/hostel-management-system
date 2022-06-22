@@ -17,9 +17,8 @@ public class Room {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private int maxStudentOccupants;
+    private Integer maxStudentOccupants;
     private double cost;
-    private boolean status;
     @OneToMany(mappedBy = "room",cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)
     private List<Booking> booking;
@@ -28,7 +27,4 @@ public class Room {
     @JoinColumn(name = "hostel_id",nullable = false)
     private Hostel hostel;
 
-    public void setRoomStatus(boolean b) {
-        this.status = b;
-    }
 }

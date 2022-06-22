@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
@@ -16,7 +17,9 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private boolean book;
+    private String book;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
     @ManyToOne
     @JoinColumn(name = "room_id")
     private Room room;
@@ -24,5 +27,8 @@ public class Booking {
     @JoinColumn(name = "user_id")
     private User user;
 
-
+    public LocalDateTime getEndDate() {
+        this.setEndDate(this.getStartDate().plusMonths(3));
+        return endDate;
+    }
 }
