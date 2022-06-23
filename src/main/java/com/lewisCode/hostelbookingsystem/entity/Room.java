@@ -17,7 +17,7 @@ public class Room {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private Integer maxStudentOccupants;
+    private Long maxStudentOccupants;
     private double cost;
     @OneToMany(mappedBy = "room",cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)
@@ -26,5 +26,6 @@ public class Room {
     @ManyToOne
     @JoinColumn(name = "hostel_id",nullable = false)
     private Hostel hostel;
+
 
 }

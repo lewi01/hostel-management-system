@@ -2,6 +2,7 @@ package com.lewisCode.hostelbookingsystem.service;
 
 import com.lewisCode.hostelbookingsystem.dto.HostelResponse;
 import com.lewisCode.hostelbookingsystem.entity.Hostel;
+import com.lewisCode.hostelbookingsystem.entity.User;
 import com.lewisCode.hostelbookingsystem.exeptions.UserNotFound;
 import com.lewisCode.hostelbookingsystem.repository.HostelRepository;
 import com.lewisCode.hostelbookingsystem.repository.UserRepository;
@@ -9,6 +10,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -18,12 +20,22 @@ public class HostelService {
     private UserRepository userRepository;
 
     public void createHostel(Long adminId, Hostel hostel){
-        userRepository.findById(adminId)
-                .map(user -> {
-                    hostel.setUser(user);
-                    return hostelRepository.save(hostel);
-                })
-                .orElseThrow(() -> new UserNotFound("Not found admin with id " + adminId));
+        Hostel hostel1 = hostelRepository.findByName(hostel.getName());
+        if(hostel1 != null){
+            throw new UserNotFound("Hostel already exists");
+        }
+        Optional<User> user = userRepository.findById(adminId);
+        if(user.isEmpty()){
+            throw new UserNotFound("User not found");
+        }
+        hostel.setUser(user.get());
+        hostelRepository.save(hostel);
+//        userRepository.findById(adminId)
+//                .map(user -> {
+//                    hostel.setUser(user);
+//                    return hostelRepository.save(hostel);
+//                })
+//                .orElseThrow(() -> new UserNotFound("Not found admin with id " + adminId));
 
     }
     public  void  updateHostel(Hostel hostel, String name){

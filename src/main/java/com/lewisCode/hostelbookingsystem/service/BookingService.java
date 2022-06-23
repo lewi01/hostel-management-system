@@ -24,21 +24,17 @@ public class BookingService {
             booking.setUser(user);
             for (Room room : roomRepository.findAll()) {
                 if (room.getName().equals(roomName)) {
+                    if(bookingRepository.count() > room.getMaxStudentOccupants()) {
+                        throw new UserNotFound("Room is full");
+                    }
                     booking.setRoom(room);
                     break;
                 }
-            }
-            if(bookingRepository.count() > bookingRepository.findByRoomMaxStudentOccupants
-                    (booking.getRoom().getMaxStudentOccupants())) {
-                throw new UserNotFound("Room is full");
             }
             booking.setStartDate(LocalDateTime.now());
             booking.setEndDate(booking.getEndDate());
             return bookingRepository.save(booking);
         }).orElseThrow(() -> new UserNotFound("User not found"));
-    }
-    public long getAllBookings(){
-        return bookingRepository.count();
     }
 
 }

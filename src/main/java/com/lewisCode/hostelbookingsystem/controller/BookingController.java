@@ -24,8 +24,4 @@ public class BookingController {
          return ResponseEntity.ok(booking.getUser().getLastName() +" has booked " +
                  booking.getRoom().getName() +"  successfully");
     }
-    @GetMapping("/get/")
-    public long getAllBookings(){
-        return bookingService.getAllBookings();
-    }
 }

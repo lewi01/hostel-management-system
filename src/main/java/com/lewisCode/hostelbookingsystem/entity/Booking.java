@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -26,7 +27,8 @@ public class Booking {
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
-
+    @OneToMany(mappedBy = "booking",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Payment> payment;
     public LocalDateTime getEndDate() {
         this.setEndDate(this.getStartDate().plusMonths(3));
         return endDate;
