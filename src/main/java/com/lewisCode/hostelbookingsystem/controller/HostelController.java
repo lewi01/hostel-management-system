@@ -2,9 +2,11 @@ package com.lewisCode.hostelbookingsystem.controller;
 
 import com.lewisCode.hostelbookingsystem.dto.HostelResponse;
 import com.lewisCode.hostelbookingsystem.entity.Hostel;
+import com.lewisCode.hostelbookingsystem.entity.MyUserDetails;
 import com.lewisCode.hostelbookingsystem.service.HostelService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,10 +21,10 @@ public class HostelController {
 
     private HostelService hostelService;
 
-    @PostMapping("/admin/{adminId}/create")
-    public ResponseEntity<?> createHostel(@PathVariable Long adminId,
+    @PostMapping("/admin/create")
+    public ResponseEntity<?> createHostel(@AuthenticationPrincipal MyUserDetails userDetails,
                                           @Valid @RequestBody Hostel hostel){
-        hostelService.createHostel(adminId,hostel);
+        hostelService.createHostel(userDetails.getUsername(),hostel);
         return ResponseEntity.ok(hostel.getName() +" was add successfully");
     }
     @PutMapping("/update/{name}")

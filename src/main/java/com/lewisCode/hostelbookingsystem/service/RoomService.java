@@ -17,6 +17,10 @@ public class RoomService {
     private HostelRepository hostelRepository;
 
     public  void createRoom(Long hostelId, Room room){
+        Room room1 = roomRepository.findByName(room.getName());
+        if(room1 != null){
+            throw new UserNotFound("Room already exists");
+        }
         hostelRepository.findById(hostelId).
                 map(hostel -> {room.setHostel(hostel);
                 return roomRepository.save(room);})
@@ -28,7 +32,7 @@ public class RoomService {
             throw new UserNotFound("%s not found" .formatted(name));
         }
         room1.setName(room.getName());
-        room1.setMaxStudentOccupants(room.getMaxStudentOccupants());
+        room1.setOccupant(room.getOccupant());
         room1.setCost(room.getCost());
         roomRepository.save(room1);
     }
@@ -45,7 +49,7 @@ public class RoomService {
             throw new UserNotFound("%s not found" .formatted(name));
         }
         room.setName(room.getName());
-        room.setMaxStudentOccupants(room.getMaxStudentOccupants());
+        room.setOccupant(room.getOccupant());
         return room;
     }
     public List<Room> findAllRoomByHostelName(String name){

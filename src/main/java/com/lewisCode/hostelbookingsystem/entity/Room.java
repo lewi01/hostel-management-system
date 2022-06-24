@@ -17,7 +17,7 @@ public class Room {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private Long maxStudentOccupants;
+    private int occupant;
     private double cost;
     @OneToMany(mappedBy = "room",cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)
@@ -28,4 +28,14 @@ public class Room {
     private Hostel hostel;
 
 
+    public int getCapacity() {
+        int capacity = 0;
+        for (Booking booking : this.booking) {
+            if (capacity< booking.getRoom().getOccupant()) {
+                capacity++;
+                break;
+            }
+        }
+        return capacity;
+    }
 }

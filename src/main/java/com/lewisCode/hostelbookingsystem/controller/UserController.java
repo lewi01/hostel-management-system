@@ -17,7 +17,7 @@ import javax.validation.Valid;
 public class UserController {
     private UserService userService;
 
-    @PostMapping("/create")
+    @PostMapping("/signup")
     public ResponseEntity<?> createUser(@Valid @RequestBody User user){
         userService.createUser(user, user.getPhoneNumber());
         return ResponseEntity.ok(user.getFirstName() +" was add successfully");

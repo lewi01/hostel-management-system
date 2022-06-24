@@ -20,11 +20,18 @@ public class BookingService {
     private UserRepository userRepository;
 
     public void createBooking(String roomName,String userPhoneNumber,Booking booking){
+        Room rooms = roomRepository.findByName(roomName);
+        if(rooms == null){
+            throw new UserNotFound("Room not found");
+        }
+        if(rooms.getOccupant() >= rooms.getCapacity()){
+            throw new UserNotFound("Room is full");
+        }
         userRepository.findByPhoneNumber(userPhoneNumber) .map(user -> {
             booking.setUser(user);
             for (Room room : roomRepository.findAll()) {
                 if (room.getName().equals(roomName)) {
-                    if(bookingRepository.count() > room.getMaxStudentOccupants()) {
+                    if(bookingRepository.count() > room.getOccupant()) {
                         throw new UserNotFound("Room is full");
                     }
                     booking.setRoom(room);

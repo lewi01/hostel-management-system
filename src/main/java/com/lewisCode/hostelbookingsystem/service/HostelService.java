@@ -19,23 +19,17 @@ public class HostelService {
     private HostelRepository hostelRepository;
     private UserRepository userRepository;
 
-    public void createHostel(Long adminId, Hostel hostel){
+    public void createHostel(String phoneNumber, Hostel hostel){
+        Optional<User> user = userRepository.findByPhoneNumber(phoneNumber);
+        if(user.isEmpty()){
+            throw new UserNotFound("User not found");
+        }
         Hostel hostel1 = hostelRepository.findByName(hostel.getName());
         if(hostel1 != null){
             throw new UserNotFound("Hostel already exists");
         }
-        Optional<User> user = userRepository.findById(adminId);
-        if(user.isEmpty()){
-            throw new UserNotFound("User not found");
-        }
         hostel.setUser(user.get());
         hostelRepository.save(hostel);
-//        userRepository.findById(adminId)
-//                .map(user -> {
-//                    hostel.setUser(user);
-//                    return hostelRepository.save(hostel);
-//                })
-//                .orElseThrow(() -> new UserNotFound("Not found admin with id " + adminId));
 
     }
     public  void  updateHostel(Hostel hostel, String name){

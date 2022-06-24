@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 public interface BookingRepository extends JpaRepository<Booking,Long> {
         Booking findByRoomName(String name);
         Booking findByUserPhoneNumber(String phoneNumber);
-        Long countByRoomMaxStudentOccupants(Long maxStudentOccupants);
+        long countByRoomOccupant(int occupants);
         long countByUserPhoneNumber(String phoneNumber);
 }
