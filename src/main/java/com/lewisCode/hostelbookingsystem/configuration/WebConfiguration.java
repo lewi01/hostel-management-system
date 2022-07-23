@@ -3,6 +3,7 @@ package com.lewisCode.hostelbookingsystem.configuration;
 import com.lewisCode.hostelbookingsystem.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -11,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+@Configuration
 @EnableWebSecurity
 @AllArgsConstructor
 public class WebConfiguration  extends WebSecurityConfigurerAdapter {
@@ -24,13 +26,15 @@ public class WebConfiguration  extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
+        http
+                .csrf().disable()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/api/user/signup").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/hostel/admin/create").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
-                .httpBasic(); // enable basic authentication
+                .httpBasic()
+        ; // enable basic authentication
     }
 
     @Bean

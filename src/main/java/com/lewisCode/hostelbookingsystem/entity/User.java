@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Pattern;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -18,6 +20,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Pattern(regexp = "^[0-9]{10}$", message = "Phone number must be 10 digits")
     @Column
     private String phoneNumber;
     @Column
@@ -30,7 +33,7 @@ public class User {
     private String password;
     @ElementCollection
     @Enumerated(EnumType.STRING)
-    private Set<Role> role;
+    private Set<Role> role = new HashSet<>();
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)
     private List<Hostel> hostel;

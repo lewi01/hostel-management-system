@@ -22,7 +22,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class UserService implements UserDetailsService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private static boolean isFirst = true;
 
