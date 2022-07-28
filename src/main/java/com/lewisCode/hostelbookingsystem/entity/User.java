@@ -1,42 +1,58 @@
 package com.lewisCode.hostelbookingsystem.entity;
 
 import com.lewisCode.hostelbookingsystem.role.Role;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
-import javax.validation.constraints.Pattern;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+import java.util.Objects;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
+@ToString
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Pattern(regexp = "^[0-9]{10}$", message = "Phone number must be 10 digits")
     @Column
     private String phoneNumber;
     @Column
-    private String firstName;
-    @Column
-    private String lastName;
+    private String name;
     @Column
     private String email;
     @Column
     private String password;
-    @ElementCollection
+    
     @Enumerated(EnumType.STRING)
-    private Set<Role> role = new HashSet<>();
+    @ElementCollection(fetch = FetchType.EAGER)
+    private final List<Role> roles = new ArrayList<>();
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)
+    @ToString.Exclude
     private List<Hostel> hostel;
     @OneToOne(mappedBy = "user")
     private Booking booking;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        User user = (User) o;
+        return id != null && Objects.equals(id, user.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
+
+    public void grantAuthority(Role role) {
+        roles.add(role);
+    }
 }

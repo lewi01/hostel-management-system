@@ -1,48 +1,33 @@
 package com.lewisCode.hostelbookingsystem.service;
 
-import com.lewisCode.hostelbookingsystem.entity.MyUserDetails;
 import com.lewisCode.hostelbookingsystem.entity.User;
 import com.lewisCode.hostelbookingsystem.exeptions.UserExistException;
 import com.lewisCode.hostelbookingsystem.exeptions.UserNotFound;
 import com.lewisCode.hostelbookingsystem.dto.UserResponse;
 import com.lewisCode.hostelbookingsystem.repository.UserRepository;
 import com.lewisCode.hostelbookingsystem.role.Role;
-import lombok.AllArgsConstructor;
 
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-import java.util.Set;
+
+import java.util.*;
 
 @Service
-@AllArgsConstructor
-public class UserService implements UserDetailsService {
+@RequiredArgsConstructor
+public class UserService{
 
     private final UserRepository userRepository;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private static boolean isFirst = true;
+    private final PasswordEncoder passwordEncoder;
 
-    @Override
-    public UserDetails loadUserByUsername(String phoneNumber) throws UsernameNotFoundException {
-        Optional<User> user = userRepository.findByPhoneNumber(phoneNumber);
-        if (user.isEmpty()) {
-            throw new UsernameNotFoundException("User with " + phoneNumber +" not found");
-        }
-        return new MyUserDetails(user.get());
-    }
-
-    public void createUser(User user, String mobileNo){
-        Optional<User> user1 = userRepository.findByPhoneNumber(mobileNo);
+    public void createUser(User user){
+        Optional<User> user1 = userRepository.findByPhoneNumber(user.getPhoneNumber());
         if (user1.isPresent()){
             throw new UserExistException(user.getPhoneNumber()+ " Exist!");
         }
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        user.setRole(Set.of(isFirst? Role.ADMIN:Role.STUDENT));
-        isFirst = false;
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        assignRole(user);
         userRepository.save(user);
     }
     public void updateUser(User user, String mobileNo)   {
@@ -50,11 +35,10 @@ public class UserService implements UserDetailsService {
         if (user1.isEmpty()){
             throw new UserNotFound(mobileNo +" not found");
         }
-        user1.get().setFirstName(user.getFirstName());
-        user1.get().setLastName(user.getLastName());
+        user1.get().setName(user.getName());
         user1.get().setPhoneNumber(user.getPhoneNumber());
         user1.get().setEmail(user.getEmail());
-        user1.get().setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user1.get().setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user1.get());
     }
     public void deleteUser(String mobileNo) {
@@ -65,15 +49,23 @@ public class UserService implements UserDetailsService {
         userRepository.delete(user.get());
     }
     public UserResponse getUser(String mobileNo){
-        Optional<User> guest = userRepository.findByPhoneNumber(mobileNo);
+        Optional<User> user = userRepository.findByPhoneNumber(mobileNo);
         UserResponse guestDTO = new UserResponse();
-        if (guest.isPresent()){
-            guestDTO.setFirstName(guest.get().getFirstName());
-            guestDTO.setLastName(guest.get().getLastName());
-            guestDTO.setPhoneNumber(guest.get().getPhoneNumber());
+        if (user.isPresent()){
+            guestDTO.setName(user.get().getName());
+            guestDTO.setPhoneNumber(user.get().getPhoneNumber());
             return guestDTO;
         }
         throw new UserNotFound(mobileNo+" not found");
+    }
+
+    private void assignRole(User user) {
+        if (userRepository.findAll().isEmpty()) {
+            user.getRoles().clear();
+            user.grantAuthority(Role.ADMIN);
+        } else {
+            user.grantAuthority(Role.STUDENT);
+        }
     }
 
 }

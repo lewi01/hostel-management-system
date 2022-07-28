@@ -11,6 +11,5 @@ import lombok.NoArgsConstructor;
 public class UserResponse {
 
     private String phoneNumber;
-    private String firstName;
-    private String lastName;
+    private String name;
 }

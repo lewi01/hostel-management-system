@@ -8,8 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/user")
@@ -18,15 +16,15 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/signup")
-    public ResponseEntity<?> createUser(@Valid @RequestBody User user){
-        userService.createUser(user, user.getPhoneNumber());
-        return ResponseEntity.ok(user.getFirstName() +" was add successfully");
+    public ResponseEntity<?> createUser(@RequestBody User user){
+        userService.createUser(user);
+        return ResponseEntity.ok(user.getName() +" was add successfully");
     }
     @PutMapping("/update/{mobileNo}")
-    public ResponseEntity<?> updateUser(@Valid @RequestBody User user,
+    public ResponseEntity<?> updateUser(@RequestBody User user,
                                            @PathVariable String mobileNo){
         userService.updateUser(user, mobileNo);
-        return ResponseEntity.ok(user.getFirstName() +" was update successfully");
+        return ResponseEntity.ok(user.getName() +" was update successfully");
     }
     @DeleteMapping("/delete/{mobileNo}")
     public ResponseEntity<?> deleteUser(@PathVariable String mobileNo){
