@@ -14,6 +14,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
+@Table(name = "book")
 public class Booking {
 
     @Id

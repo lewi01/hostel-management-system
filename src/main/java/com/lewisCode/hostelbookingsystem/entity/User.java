@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -23,12 +24,12 @@ public class User {
     @Column
     private String phoneNumber;
     @Column
+    @NotBlank(message = "Name must not be null.")
     private String name;
     @Column
     private String email;
     @Column
     private String password;
-    
     @Enumerated(EnumType.STRING)
     @ElementCollection(fetch = FetchType.EAGER)
     private final List<Role> roles = new ArrayList<>();

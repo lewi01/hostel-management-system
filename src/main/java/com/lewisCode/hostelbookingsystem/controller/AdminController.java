@@ -7,6 +7,9 @@ import com.lewisCode.hostelbookingsystem.service.HostelService;
 import com.lewisCode.hostelbookingsystem.service.RoomService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,10 +27,13 @@ public class AdminController {
 
     private BookingService bookingService;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/create/{phoneNumber}")
     public ResponseEntity<?> createHostel(@PathVariable String phoneNumber,
                                           @Valid @RequestBody Hostel hostel){
         hostelService.createHostel(phoneNumber, hostel);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println(auth.getAuthorities());
         return ResponseEntity.ok(hostel.getName() +" was add successfully");
     }
     @PostMapping("/hostel/{hostelId}/create")

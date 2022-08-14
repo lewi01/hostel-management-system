@@ -8,6 +8,8 @@ import com.lewisCode.hostelbookingsystem.repository.UserRepository;
 import com.lewisCode.hostelbookingsystem.role.Role;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +29,13 @@ public class UserService{
             throw new UserExistException(user.getPhoneNumber()+ " Exist!");
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        assignRole(user);
+        //assignRole(user);
+        if (userRepository.findAll().isEmpty()) {
+            user.getRoles().clear();
+            user.grantAuthority(Role.ADMIN);
+        } else {
+            user.grantAuthority(Role.STUDENT);
+        }
         userRepository.save(user);
     }
     public void updateUser(User user, String mobileNo)   {
