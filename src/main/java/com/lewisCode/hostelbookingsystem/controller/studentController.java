@@ -27,12 +27,12 @@ public class studentController {
     private BookingService bookingService;
 
     @PostMapping("/user/{userPhoneNumber}/book/{roomName}/create")
-    public ResponseEntity<?> createBooking(@PathVariable String roomName,
+    public ResponseEntity<?> bookRoom(@PathVariable String roomName,
                                            @PathVariable String userPhoneNumber,
                                            @Valid @RequestBody Booking booking){
-        bookingService.createBooking(roomName, userPhoneNumber, booking);
+        bookingService.bookingRoom(roomName, userPhoneNumber, booking);
         return ResponseEntity.ok(booking.getUser().getName() +" has booked " +
-                booking.getRoom().getName() +"  successfully");
+                " a room successfully");
     }
 
     @GetMapping("/getHostel/{name}")

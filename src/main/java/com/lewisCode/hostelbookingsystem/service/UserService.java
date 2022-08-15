@@ -8,8 +8,6 @@ import com.lewisCode.hostelbookingsystem.repository.UserRepository;
 import com.lewisCode.hostelbookingsystem.role.Role;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -32,9 +30,9 @@ public class UserService{
         //assignRole(user);
         if (userRepository.findAll().isEmpty()) {
             user.getRoles().clear();
-            user.grantAuthority(Role.ADMIN);
+            user.getRoles().add(Role.ADMIN);
         } else {
-            user.grantAuthority(Role.STUDENT);
+            user.getRoles().add(Role.STUDENT);
         }
         userRepository.save(user);
     }
@@ -65,15 +63,6 @@ public class UserService{
             return guestDTO;
         }
         throw new UserNotFound(mobileNo+" not found");
-    }
-
-    private void assignRole(User user) {
-        if (userRepository.findAll().isEmpty()) {
-            user.getRoles().clear();
-            user.grantAuthority(Role.ADMIN);
-        } else {
-            user.grantAuthority(Role.STUDENT);
-        }
     }
 
 }

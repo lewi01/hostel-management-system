@@ -15,21 +15,20 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true,securedEnabled = true)
 public class WebConfiguration {
-
-    private static final String[] AUTH_WHITELIST = {
-            // -- Swagger UI v2
-            "/v2/api-docs",
-            "/swagger-resources",
-            "/swagger-resources/**",
-            "/configuration/ui",
-            "/configuration/security",
-            "/swagger-ui.html",
-            "/webjars/**",
-            // -- Swagger UI v3 (OpenAPI)
-            "/v3/api-docs/**",
-            "/swagger-ui/**",
-            "/api/user/**"
-    };
+//
+//    private static final String[] AUTH_WHITELIST = {
+//            // -- Swagger UI v2
+//            "/v2/api-docs",
+//            "/swagger-resources",
+//            "/swagger-resources/**",
+//            "/configuration/ui",
+//            "/configuration/security",
+//            "/swagger-ui.html",
+//            "/webjars/**",
+//            // -- Swagger UI v3 (OpenAPI)
+//            "/v3/api-docs/**",
+//            "/swagger-ui/**",
+//    };
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -39,9 +38,9 @@ public class WebConfiguration {
                 .csrf().disable().headers().frameOptions().disable()
                 .and()
                 .authorizeRequests()
-                .antMatchers(AUTH_WHITELIST).anonymous()
-                .antMatchers(HttpMethod.POST,"/api/admin/**")
-//                .anyRequest()
+                .antMatchers("/api/user/**").anonymous()
+                //.antMatchers(HttpMethod.POST,"/api/admin/**").hasAuthority(Role.ADMIN.name())
+                .anyRequest()
                 .authenticated()
                 .and()
                 .sessionManagement()

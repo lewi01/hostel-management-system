@@ -27,7 +27,7 @@ public class AdminController {
 
     private BookingService bookingService;
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/create/{phoneNumber}")
     public ResponseEntity<?> createHostel(@PathVariable String phoneNumber,
                                           @Valid @RequestBody Hostel hostel){
