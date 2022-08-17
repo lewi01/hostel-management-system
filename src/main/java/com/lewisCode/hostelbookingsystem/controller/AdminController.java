@@ -36,37 +36,40 @@ public class AdminController {
         System.out.println(auth.getAuthorities());
         return ResponseEntity.ok(hostel.getName() +" was add successfully");
     }
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/hostel/{hostelId}/create")
     public ResponseEntity<?> createRoom(@PathVariable Long hostelId,
                                         @Valid @RequestBody Room room){
         roomService.createRoom(hostelId, room);
         return ResponseEntity.ok(room.getName() +" was add successfully");
     }
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/updateHotel/{name}")
     public ResponseEntity<?> updateHostel(@Valid @RequestBody Hostel hostel,
                                           @PathVariable String name){
         hostelService.updateHostel(hostel, name);
         return ResponseEntity.ok(hostel.getName() +" was update successfully");
     }
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/updateRoom/{name}")
     public ResponseEntity<?> updateRoom(@Valid @RequestBody Room room,
                                         @PathVariable String name){
         roomService.updateRoom(room, name);
         return ResponseEntity.ok(room.getName() +" was update successfully");
     }
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/admin/{phoneNumber}/get")
     public List<Hostel> getAllHostelAsPerAdminPhoneNumber(
             @PathVariable String phoneNumber ){
         return hostelService.findAllHostelByUserPhoneNumber(phoneNumber);
     }
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/deleteHostel/{name}")
     public ResponseEntity<?> deleteHostel(@PathVariable String name){
         hostelService.deleteHostel(name);
         return ResponseEntity.ok(name +" was successfully deleted");
     }
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/deleteRoom/{name}")
     public ResponseEntity<?> deleteRoom(@PathVariable String name){
         roomService.deleteRoom(name);

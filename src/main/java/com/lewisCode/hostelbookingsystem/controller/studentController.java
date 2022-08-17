@@ -8,6 +8,7 @@ import com.lewisCode.hostelbookingsystem.service.HostelService;
 import com.lewisCode.hostelbookingsystem.service.RoomService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,6 +27,7 @@ public class studentController {
 
     private BookingService bookingService;
 
+    @PreAuthorize("hasAuthority('STUDENT')")
     @PostMapping("/user/{userPhoneNumber}/book/{roomName}/create")
     public ResponseEntity<?> bookRoom(@PathVariable String roomName,
                                            @PathVariable String userPhoneNumber,
@@ -34,7 +36,7 @@ public class studentController {
         return ResponseEntity.ok(booking.getUser().getName() +" has booked " +
                 " a room successfully");
     }
-
+    @PreAuthorize("hasAuthority('STUDENT')")
     @GetMapping("/getHostel/{name}")
     public HostelResponse getHostel(@PathVariable String name){
         return hostelService.findHostel(name);
@@ -44,6 +46,7 @@ public class studentController {
 
         return roomService.findRoom(name);
     }
+    @PreAuthorize("hasAuthority('STUDENT')")
     @GetMapping("/hostel/{name}")
     public List<Room> getAllRoom(
             @PathVariable String name ){
