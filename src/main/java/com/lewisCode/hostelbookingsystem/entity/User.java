@@ -53,7 +53,4 @@ public class User {
         return getClass().hashCode();
     }
 
-//    public void grantAuthority(Role role) {
-//        roles.add(role);
-//    }
 }

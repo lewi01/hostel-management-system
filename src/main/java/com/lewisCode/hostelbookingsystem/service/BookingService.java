@@ -25,7 +25,7 @@ public class BookingService {
             throw new UserNotFound("Room not found");
         }
 
-        if(bookingRepository.countByBook(booking.getBook()) <= rooms.getOccupant()){
+        if(bookingRepository.countByBook(booking.getBook()) > rooms.getOccupant()){
             throw new UserNotFound("Room is full");
         }
         userRepository.findByPhoneNumber(userPhoneNumber) .map(user -> {
