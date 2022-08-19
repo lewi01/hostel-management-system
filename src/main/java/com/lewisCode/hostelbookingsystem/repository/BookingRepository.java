@@ -6,8 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BookingRepository extends JpaRepository<Booking,Long> {
-        Booking findByRoomName(String name);
-        Booking findByUserPhoneNumber(String phoneNumber);
-//        long countByRoomOccupant(int occupants);
-       long countByBook(String book);
+    Booking findByRoomName(String name);
+    Booking findByUserPhoneNumber(String phoneNumber);
+    long countBookByRoomId(Long id);
 }

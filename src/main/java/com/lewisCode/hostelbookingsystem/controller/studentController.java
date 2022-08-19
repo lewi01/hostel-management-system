@@ -33,8 +33,8 @@ public class studentController {
                                            @PathVariable String userPhoneNumber,
                                            @Valid @RequestBody Booking booking){
         bookingService.bookingRoom(roomName, userPhoneNumber, booking);
-        return ResponseEntity.ok(booking.getUser().getName() +" has booked " +
-                " a room successfully");
+        return ResponseEntity.ok(booking.getUser().getName() +" has booked room " +
+                booking.getRoom().getName() + " successfully");
     }
     @PreAuthorize("hasAuthority('STUDENT')")
     @GetMapping("/getHostel/{name}")

@@ -24,13 +24,12 @@ public class BookingService {
         if(rooms == null){
             throw new UserNotFound("Room not found");
         }
-
-        if(bookingRepository.countByBook(booking.getBook()) > rooms.getOccupant()){
+        if(bookingRepository.countBookByRoomId(rooms.getId()) >= rooms.getOccupant()){
             throw new UserNotFound("Room is full");
         }
         userRepository.findByPhoneNumber(userPhoneNumber) .map(user -> {
             booking.setUser(user);
-            booking.setRoom(booking.getRoom());
+            booking.setRoom(rooms);
             booking.setStartDate(LocalDateTime.now());
             booking.setEndDate(booking.getEndDate());
             return bookingRepository.save(booking);

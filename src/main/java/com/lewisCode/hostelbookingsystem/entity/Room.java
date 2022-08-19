@@ -30,16 +30,6 @@ public class Room {
     @JoinColumn(name = "hostel_id",nullable = false)
     private Hostel hostel;
 
-//    public boolean getNumberOfOccupant(long numberOfOccupant){
-//        int number =0;
-//       if (numberOfOccupant > getOccupant()){
-//           System.out.println("Room is full");
-//           return false;
-//       }
-//       number++;
-//       return true;
-//    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
